@@ -1,0 +1,43 @@
+# Cloudflare Workers 配置文件示例
+# 复制此文件为 wrangler.toml 并填入您的实际配置
+
+name = "your-faviconsnap"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# 自定义域名路由（可选）
+# 如果使用自定义域名，请取消注释并替换为您的域名
+# routes = [
+#   { pattern = "your-domain.com/*", zone_name = "your-domain.com" },
+#   { pattern = "www.your-domain.com/*", zone_name = "your-domain.com" }
+# ]
+
+# KV 存储绑定（增强版缓存需要）
+# 运行 `wrangler kv:namespace create FAVICON_CACHE` 创建 KV 后填入实际 ID
+[[kv_namespaces]]
+binding = "FAVICON_CACHE"
+id = "YOUR_KV_ID_HERE"  # 替换为实际的 KV ID
+
+# 生产环境配置（可选）
+[env.production]
+name = "your-faviconsnap-prod"
+# routes = [
+#   { pattern = "your-domain.com/*", zone_name = "your-domain.com" },
+#   { pattern = "www.your-domain.com/*", zone_name = "your-domain.com" }
+# ]
+
+# 开发环境配置（可选）
+[env.development]
+name = "your-faviconsnap-dev"
+[[env.development.kv_namespaces]]
+binding = "FAVICON_CACHE"
+id = "YOUR_KV_ID_HERE"  # 使用相同的 KV ID 或创建专用开发环境 KV
+
+# 环境变量
+[vars]
+ENVIRONMENT = "production"
+CACHE_TTL = "604800"  # 7天缓存（秒）
+
+# 性能限制（可选，有助于成本控制）
+[limits]
+cpu_ms = 100  # 每次调用最多100毫秒 CPU 时间
