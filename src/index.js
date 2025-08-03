@@ -639,6 +639,95 @@ function generateHTML(lang = 'en') {
             line-height: 1.4;
         }
 
+        /* 用户反馈部分样式 */
+        .feedback-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-top: 4rem;
+        }
+        
+        .feedback-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+        
+        .feedback-header h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .feedback-header p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .feedback-form-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .tally-embed {
+            width: 100%;
+            min-height: 500px;
+            border: none;
+            border-radius: 12px;
+            background: white;
+        }
+        
+        .feedback-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            margin-top: 1rem;
+        }
+        
+        .feedback-cta:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feedback-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feedback-stat {
+            text-align: center;
+        }
+        
+        .feedback-stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+        
+        .feedback-stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
         
         /* 响应式设计 */
         @media (max-width: 768px) {
@@ -703,6 +792,37 @@ function generateHTML(lang = 'en') {
             
             .metrics-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .feedback-section {
+                padding: 3rem 0;
+                margin-top: 3rem;
+            }
+            
+            .feedback-header h3 {
+                font-size: 2rem;
+            }
+            
+            .feedback-header p {
+                font-size: 1.1rem;
+            }
+            
+            .feedback-form-container {
+                padding: 1.5rem;
+            }
+            
+            .tally-embed {
+                min-height: 400px;
+            }
+            
+            .feedback-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                margin-top: 2rem;
+            }
+            
+            .feedback-stat-value {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -896,6 +1016,46 @@ Cache-Control: public, max-age=7200</code></pre>
         </div>
     </div>
     
+    <!-- 用户反馈部分 -->
+    <div class="feedback-section">
+        <div class="feedback-container">
+            <div class="feedback-header">
+                <h3 data-i18n="feedback-title">💬 用户反馈</h3>
+                <p data-i18n="feedback-subtitle">您的意见对我们很重要！请分享您的使用体验、建议或遇到的问题。</p>
+            </div>
+            
+            <div class="feedback-form-container">
+                <iframe 
+                    src="https://tally.so/embed/mZB9eo?alignLeft=1&hideTitle=1&transparentBackground=1" 
+                    class="tally-embed"
+                    frameborder="0"
+                    marginheight="0"
+                    marginwidth="0"
+                    title="FaviconSnap Contact form">
+                </iframe>
+            </div>
+            
+            <div class="feedback-stats">
+                <div class="feedback-stat">
+                    <div class="feedback-stat-value" data-i18n="feedback-stat-users">10K+</div>
+                    <div class="feedback-stat-label" data-i18n="feedback-stat-users-label">活跃用户</div>
+                </div>
+                <div class="feedback-stat">
+                    <div class="feedback-stat-value" data-i18n="feedback-stat-requests">1M+</div>
+                    <div class="feedback-stat-label" data-i18n="feedback-stat-requests-label">API请求</div>
+                </div>
+                <div class="feedback-stat">
+                    <div class="feedback-stat-value" data-i18n="feedback-stat-uptime">99.9%</div>
+                    <div class="feedback-stat-label" data-i18n="feedback-stat-uptime-label">服务可用性</div>
+                </div>
+                <div class="feedback-stat">
+                    <div class="feedback-stat-value" data-i18n="feedback-stat-response">24h</div>
+                    <div class="feedback-stat-label" data-i18n="feedback-stat-response-label">反馈响应</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // 更新API预览
         function updateApiPreview() {
@@ -1076,7 +1236,19 @@ Cache-Control: public, max-age=7200</code></pre>
                 'perf-response-time': '平均响应时间',
                 'perf-cache-hit': '缓存命中率',
                 'perf-nodes': '全球节点',
-                'perf-uptime': '可用性保证'
+                'perf-uptime': '可用性保证',
+                
+                // 用户反馈相关翻译
+                'feedback-title': '💬 用户反馈',
+                'feedback-subtitle': '您的意见对我们很重要！请分享您的使用体验、建议或遇到的问题。',
+                'feedback-stat-users': '10K+',
+                'feedback-stat-users-label': '活跃用户',
+                'feedback-stat-requests': '1M+',
+                'feedback-stat-requests-label': 'API请求',
+                'feedback-stat-uptime': '99.9%',
+                'feedback-stat-uptime-label': '服务可用性',
+                'feedback-stat-response': '24h',
+                'feedback-stat-response-label': '反馈响应'
             },
             en: {
                 'subtitle': 'Enterprise Favicon API • Global CDN • Millisecond Response',
@@ -1122,7 +1294,19 @@ Cache-Control: public, max-age=7200</code></pre>
                 'perf-response-time': 'Avg Response Time',
                 'perf-cache-hit': 'Cache Hit Rate',
                 'perf-nodes': 'Global Nodes',
-                'perf-uptime': 'Uptime Guarantee'
+                'perf-uptime': 'Uptime Guarantee',
+                
+                // User feedback related translations
+                'feedback-title': '💬 User Feedback',
+                'feedback-subtitle': 'Your feedback matters to us! Please share your experience, suggestions, or any issues you encounter.',
+                'feedback-stat-users': '10K+',
+                'feedback-stat-users-label': 'Active Users',
+                'feedback-stat-requests': '1M+',
+                'feedback-stat-requests-label': 'API Requests',
+                'feedback-stat-uptime': '99.9%',
+                'feedback-stat-uptime-label': 'Service Uptime',
+                'feedback-stat-response': '24h',
+                'feedback-stat-response-label': 'Feedback Response'
             }
         };
         
