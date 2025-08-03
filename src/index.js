@@ -9,7 +9,7 @@ function generateHTML(lang = 'en') {
     const texts = {
         zh: {
             title: 'FaviconSnap - 专业的网站图标获取API',
-            description: '企业级favicon图标获取API服务，支持直接返回图片、JSON数据和重定向，全球CDN加速，毫秒级响应',
+            description: '企业级favicon图标获取API服务，支持直接返回图片、JSON数据，全球CDN加速，毫秒级响应',
             subtitle: '企业级网站图标获取API • 全球CDN加速 • 毫秒级响应',
             currentLang: 'zh',
             otherLang: 'en',
@@ -18,7 +18,7 @@ function generateHTML(lang = 'en') {
         },
         en: {
             title: 'FaviconSnap - Professional Favicon API',
-            description: 'Enterprise favicon API service, supports direct image return, JSON data and redirect, global CDN acceleration, millisecond response',
+            description: 'Enterprise favicon API service, supports direct image return, JSON data, global CDN acceleration, millisecond response',
             subtitle: 'Enterprise Favicon API • Global CDN • Millisecond Response',
             currentLang: 'en',
             otherLang: 'zh', 
@@ -612,14 +612,14 @@ function generateHTML(lang = 'en') {
             margin-top: 0.5rem;
         }
         
-        .json-result, .redirect-result {
+        .json-result {
             background: #f8f9fa;
             border: 1px solid #e9ecef;
             border-radius: 8px;
             padding: 1.5rem;
         }
         
-        .json-result h4, .redirect-result h4 {
+        .json-result h4 {
             color: #333;
             margin-bottom: 1rem;
         }
@@ -638,23 +638,7 @@ function generateHTML(lang = 'en') {
             font-size: 0.85rem;
             line-height: 1.4;
         }
-        
-        .redirect-result p {
-            margin-bottom: 0.5rem;
-        }
-        
-        .redirect-result strong {
-            color: #495057;
-        }
-        
-        .redirect-result a {
-            color: #7033ff;
-            text-decoration: none;
-        }
-        
-        .redirect-result a:hover {
-            text-decoration: underline;
-        }
+
         
         /* 响应式设计 */
         @media (max-width: 768px) {
@@ -734,8 +718,8 @@ function generateHTML(lang = 'en') {
                         </svg>
                     </a>
                     <div class="language-selector">
-                        <a href="/" class="lang-btn ${t.currentLang === 'en' ? 'active' : ''}" data-lang="en">English</a>
-                        <a href="/zh" class="lang-btn ${t.currentLang === 'zh' ? 'active' : ''}" data-lang="zh">中文</a>
+                        <a href="/" class="lang-btn ${lang === 'en' ? 'active' : ''}" data-lang="en">English</a>
+                        <a href="/zh" class="lang-btn ${lang === 'zh' ? 'active' : ''}" data-lang="zh">中文</a>
                     </div>
                 </div>
             </div>
@@ -762,7 +746,7 @@ function generateHTML(lang = 'en') {
                     <select id="formatSelect" class="format-select">
                         <option value="" data-i18n="format-image">图片 (默认)</option>
                         <option value="json" data-i18n="format-json">JSON 数据</option>
-                        <option value="redirect" data-i18n="format-redirect">重定向</option>
+                        
                     </select>
                     <button class="btn" onclick="getFavicon()" data-i18n="demo-button">获取图标</button>
                 </div>
@@ -800,7 +784,7 @@ function generateHTML(lang = 'en') {
                     <div class="feature-item">
                         <div class="feature-icon">🔧</div>
                         <h4 data-i18n="feature-formats-title">多种格式</h4>
-                        <p data-i18n="feature-formats-desc">支持图片、JSON、重定向三种返回格式</p>
+                        <p data-i18n="feature-formats-desc">支持图片、JSON两种返回格式</p>
                     </div>
                 </div>
             </div>
@@ -832,7 +816,7 @@ function generateHTML(lang = 'en') {
                         <div class="param-name"><code>format</code></div>
                         <div class="param-type">string</div>
                         <div class="param-required optional">❌</div>
-                        <div class="param-desc" data-i18n="param-format-desc">返回格式: <code>image</code>(默认) | <code>json</code> | <code>redirect</code></div>
+                        <div class="param-desc" data-i18n="param-format-desc">返回格式: <code>image</code>(默认) | <code>json</code></div>
                     </div>
                     <div class="param-row">
                         <div class="param-name"><code>size</code></div>
@@ -885,17 +869,7 @@ Cache-Control: public, max-age=7200</code></pre>
                     </div>
                 </div>
                 
-                <div class="response-type">
-                    <h4 data-i18n="response-redirect-title">🔄 重定向格式 (format=redirect)</h4>
-                    <div class="response-info">
-                        <p data-i18n="response-redirect-desc">302 重定向到原始 favicon URL</p>
-                        <div class="response-headers">
-                            <strong data-i18n="response-headers">响应头:</strong>
-                            <pre><code>HTTP/1.1 302 Found
-Location: https://github.com/favicon.ico</code></pre>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             
             <div class="api-performance">
@@ -1014,30 +988,6 @@ Location: https://github.com/favicon.ico</code></pre>
                         const errorText = currentLang === 'en' ? 'Failed to get favicon' : '获取失败';
                         resultDiv.innerHTML = \`<p>❌ \${errorText}: \${data.error}</p>\`;
                     }
-                } else if (displayFormat === 'redirect') {
-                    // 重定向格式：显示重定向信息
-                    const response = await fetch(apiUrl + '&format=json');
-                    const data = await response.json();
-                    
-                    if (data.success) {
-                        const redirectTitleText = currentLang === 'en' ? '🔄 Redirect Information' : '🔄 重定向信息';
-                        const redirectUrlText = currentLang === 'en' ? 'Redirect URL:' : '重定向URL:';
-                        const statusCodeText = currentLang === 'en' ? 'HTTP Status Code:' : 'HTTP状态码:';
-                        const testRedirectText = currentLang === 'en' ? 'Test Redirect:' : '测试重定向:';
-                        const clickTestText = currentLang === 'en' ? 'Click to test' : '点击测试';
-                        
-                        resultDiv.innerHTML = \`
-                            <div class="redirect-result">
-                                <h4>\${redirectTitleText}</h4>
-                                <p><strong>\${redirectUrlText}</strong> <a href="\${data.favicon}" target="_blank">\${data.favicon}</a></p>
-                                <p><strong>\${statusCodeText}</strong> 302 Found</p>
-                                <p><strong>\${testRedirectText}</strong> <a href="\${apiUrl}&format=redirect" target="_blank">\${clickTestText}</a></p>
-                            </div>
-                        \`;
-                    } else {
-                        const errorText = currentLang === 'en' ? 'Failed to get favicon' : '获取失败';
-                        resultDiv.innerHTML = \`<p>❌ \${errorText}: \${data.error}</p>\`;
-                    }
                 } else {
                     // 图片格式：显示图片和信息
                     const infoResponse = await fetch(apiUrl + '&format=json');
@@ -1092,7 +1042,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'demo-button': '获取图标',
                 'format-image': '图片 (默认)',
                 'format-json': 'JSON 数据',
-                'format-redirect': '重定向',
+
                 'api-preview-label': 'API 请求预览：',
                 'copy-button': '📋 复制',
                 'api-docs-title': '📚 API 文档',
@@ -1103,7 +1053,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'feature-global-title': '全球加速',
                 'feature-global-desc': '200+边缘节点，就近响应用户请求',
                 'feature-formats-title': '多种格式',
-                'feature-formats-desc': '支持图片、JSON、重定向三种返回格式',
+                'feature-formats-desc': '支持图片、JSON两种返回格式',
                 'api-endpoint-title': '📍 API 端点',
                 'api-params-title': '📝 请求参数',
                 'param-name': '参数名',
@@ -1111,7 +1061,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'param-required': '必需',
                 'param-desc': '说明',
                 'param-url-desc': '目标网站的URL',
-                'param-format-desc': '返回格式: <code>image</code>(默认) | <code>json</code> | <code>redirect</code>',
+                'param-format-desc': '返回格式: <code>image</code>(默认) | <code>json</code>',
                 'param-size-desc': '图标大小: 16, 32(默认), 64, 128',
                 'param-nocache-desc': '跳过缓存，强制重新获取',
                 'examples-title': '💡 使用示例',
@@ -1120,8 +1070,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'response-image-desc': '直接返回 favicon 图片的二进制内容，可直接在 <img> 标签中使用',
                 'response-json-title': '📋 JSON 格式 (format=json)',
                 'response-json-desc': '返回包含详细信息的JSON数据',
-                'response-redirect-title': '🔄 重定向格式 (format=redirect)',
-                'response-redirect-desc': '302 重定向到原始 favicon URL',
+
                 'response-headers': '响应头:',
                 'performance-title': '⚡ 性能指标',
                 'perf-response-time': '平均响应时间',
@@ -1139,7 +1088,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'demo-button': 'Get Favicon',
                 'format-image': 'Image (Default)',
                 'format-json': 'JSON Data',
-                'format-redirect': 'Redirect',
+
                 'api-preview-label': 'API Request Preview:',
                 'copy-button': '📋 Copy',
                 'api-docs-title': '📚 API Documentation',
@@ -1150,7 +1099,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'feature-global-title': 'Global Acceleration',
                 'feature-global-desc': '200+ edge nodes, nearest response to users',
                 'feature-formats-title': 'Multiple Formats',
-                'feature-formats-desc': 'Support image, JSON, redirect response formats',
+                'feature-formats-desc': 'Support image, JSON response formats',
                 'api-endpoint-title': '📍 API Endpoint',
                 'api-params-title': '📝 Request Parameters',
                 'param-name': 'Parameter',
@@ -1158,7 +1107,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'param-required': 'Required',
                 'param-desc': 'Description',
                 'param-url-desc': 'Target website URL',
-                'param-format-desc': 'Response format: <code>image</code>(default) | <code>json</code> | <code>redirect</code>',
+                'param-format-desc': 'Response format: <code>image</code>(default) | <code>json</code>',
                 'param-size-desc': 'Icon size: 16, 32(default), 64, 128',
                 'param-nocache-desc': 'Skip cache, force refresh',
                 'examples-title': '💡 Examples',
@@ -1167,8 +1116,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'response-image-desc': 'Returns favicon image binary directly, can be used in <img> tags',
                 'response-json-title': '📋 JSON Format (format=json)',
                 'response-json-desc': 'Returns JSON data with detailed information',
-                'response-redirect-title': '🔄 Redirect Format (format=redirect)',
-                'response-redirect-desc': '302 redirect to original favicon URL',
+
                 'response-headers': 'Response Headers:',
                 'performance-title': '⚡ Performance Metrics',
                 'perf-response-time': 'Avg Response Time',
@@ -1554,10 +1502,7 @@ export default {
                 const faviconService = new EnhancedFaviconService(env.FAVICON_CACHE);
                 const result = await faviconService.getFavicon(targetUrl, size, nocache, lang);
                 
-                // 如果请求格式是redirect，直接重定向到favicon
-                if (format === 'redirect') {
-                    return Response.redirect(result.favicon, 302);
-                }
+
                 
                 // 默认返回图片，除非明确指定为json格式
                 if (format !== 'json') {
