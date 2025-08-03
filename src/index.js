@@ -942,14 +942,16 @@ Location: https://github.com/favicon.ico</code></pre>
             navigator.clipboard.writeText(apiUrl).then(() => {
                 const btn = document.querySelector('.copy-btn');
                 const originalText = btn.textContent;
-                btn.textContent = '✅ 已复制';
+                const copiedText = currentLang === 'en' ? '✅ Copied' : '✅ 已复制';
+                btn.textContent = copiedText;
                 btn.style.background = '#28a745';
                 setTimeout(() => {
                     btn.textContent = originalText;
                     btn.style.background = '#28a745';
                 }, 2000);
             }).catch(() => {
-                alert('复制失败，请手动复制');
+                const failText = currentLang === 'en' ? 'Copy failed, please copy manually' : '复制失败，请手动复制';
+                alert(failText);
             });
         }
         
@@ -974,13 +976,16 @@ Location: https://github.com/favicon.ico</code></pre>
             const format = document.getElementById('formatSelect').value;
             const resultDiv = document.getElementById('result');
             
+            const alertText = currentLang === 'en' ? 'Please enter a website URL' : '请输入网站URL';
+            const loadingText = currentLang === 'en' ? '🔄 Getting favicon...' : '🔄 正在获取favicon...';
+            
             if (!url) {
-                alert('请输入网站URL');
+                alert(alertText);
                 return;
             }
             
             resultDiv.style.display = 'block';
-            resultDiv.innerHTML = '<p>🔄 正在获取favicon...</p>';
+            resultDiv.innerHTML = '<p>' + loadingText + '</p>';
             
             try {
                 let apiUrl = \`/api/favicon?url=\${encodeURIComponent(url)}\`;
@@ -992,19 +997,22 @@ Location: https://github.com/favicon.ico</code></pre>
                     const data = await response.json();
                     
                     if (data.success) {
-                        const cacheInfo = data.cached ? 
-                            \`<div class="cache-info">⚡ 从缓存获取 (\${data.cacheSource || 'unknown'})</div>\` : 
-                            '<div class="cache-info">🔄 实时获取</div>';
+                        const cacheInfoText = currentLang === 'en' ? 
+                            (data.cached ? '⚡ From cache (' + (data.cacheSource || 'unknown') + ')' : '🔄 Real-time fetch') :
+                            (data.cached ? '⚡ 从缓存获取 (' + (data.cacheSource || 'unknown') + ')' : '🔄 实时获取');
+                        const jsonTitleText = currentLang === 'en' ? '📋 JSON Response Data' : '📋 JSON 响应数据';
+                        const cacheInfo = \`<div class="cache-info">\${cacheInfoText}</div>\`;
                         
                         resultDiv.innerHTML = \`
                             <div class="json-result">
-                                <h4>📋 JSON 响应数据</h4>
+                                <h4>\${jsonTitleText}</h4>
                                 <pre><code>\${JSON.stringify(data, null, 2)}</code></pre>
                                 \${cacheInfo}
                             </div>
                         \`;
                     } else {
-                        resultDiv.innerHTML = \`<p>❌ 获取失败: \${data.error}</p>\`;
+                        const errorText = currentLang === 'en' ? 'Failed to get favicon' : '获取失败';
+                        resultDiv.innerHTML = \`<p>❌ \${errorText}: \${data.error}</p>\`;
                     }
                 } else if (displayFormat === 'redirect') {
                     // 重定向格式：显示重定向信息
@@ -1012,16 +1020,23 @@ Location: https://github.com/favicon.ico</code></pre>
                     const data = await response.json();
                     
                     if (data.success) {
+                        const redirectTitleText = currentLang === 'en' ? '🔄 Redirect Information' : '🔄 重定向信息';
+                        const redirectUrlText = currentLang === 'en' ? 'Redirect URL:' : '重定向URL:';
+                        const statusCodeText = currentLang === 'en' ? 'HTTP Status Code:' : 'HTTP状态码:';
+                        const testRedirectText = currentLang === 'en' ? 'Test Redirect:' : '测试重定向:';
+                        const clickTestText = currentLang === 'en' ? 'Click to test' : '点击测试';
+                        
                         resultDiv.innerHTML = \`
                             <div class="redirect-result">
-                                <h4>🔄 重定向信息</h4>
-                                <p><strong>重定向URL:</strong> <a href="\${data.favicon}" target="_blank">\${data.favicon}</a></p>
-                                <p><strong>HTTP状态码:</strong> 302 Found</p>
-                                <p><strong>测试重定向:</strong> <a href="\${apiUrl}&format=redirect" target="_blank">点击测试</a></p>
+                                <h4>\${redirectTitleText}</h4>
+                                <p><strong>\${redirectUrlText}</strong> <a href="\${data.favicon}" target="_blank">\${data.favicon}</a></p>
+                                <p><strong>\${statusCodeText}</strong> 302 Found</p>
+                                <p><strong>\${testRedirectText}</strong> <a href="\${apiUrl}&format=redirect" target="_blank">\${clickTestText}</a></p>
                             </div>
                         \`;
                     } else {
-                        resultDiv.innerHTML = \`<p>❌ 获取失败: \${data.error}</p>\`;
+                        const errorText = currentLang === 'en' ? 'Failed to get favicon' : '获取失败';
+                        resultDiv.innerHTML = \`<p>❌ \${errorText}: \${data.error}</p>\`;
                     }
                 } else {
                     // 图片格式：显示图片和信息
@@ -1029,29 +1044,39 @@ Location: https://github.com/favicon.ico</code></pre>
                     const data = await infoResponse.json();
                     
                     if (data.success) {
-                        const cacheInfo = data.cached ? 
-                            \`<div class="cache-info">⚡ 从缓存获取 (\${data.cacheSource || 'unknown'})</div>\` : 
-                            '<div class="cache-info">🔄 实时获取</div>';
+                        const cacheInfoText = currentLang === 'en' ? 
+                            (data.cached ? '⚡ From cache (' + (data.cacheSource || 'unknown') + ')' : '🔄 Real-time fetch') :
+                            (data.cached ? '⚡ 从缓存获取 (' + (data.cacheSource || 'unknown') + ')' : '🔄 实时获取');
+                        const cacheInfo = \`<div class="cache-info">\${cacheInfoText}</div>\`;
+                        
+                        const successText = currentLang === 'en' ? '✅ Successfully got favicon' : '✅ 成功获取favicon';
+                        const apiAddressText = currentLang === 'en' ? 'API Address:' : 'API地址:';
+                        const originalUrlText = currentLang === 'en' ? 'Original URL:' : '原始URL:';
+                        const sizeText = currentLang === 'en' ? 'Size:' : '大小:';
+                        const sourceText = currentLang === 'en' ? 'Source:' : '来源:';
+                        const unknownText = currentLang === 'en' ? 'Unknown' : '未知';
                         
                         resultDiv.innerHTML = \`
                             <div class="favicon-display">
                                 <img src="\${apiUrl}" alt="favicon" onerror="this.src='\${data.favicon}'; this.onerror=null;">
                                 <div>
-                                    <p><strong>✅ 成功获取favicon</strong></p>
-                                    <p>API地址: <code>\${apiUrl}</code></p>
-                                    <p>原始URL: <a href="\${data.favicon}" target="_blank">\${data.favicon}</a></p>
-                                    <p>大小: \${data.size || '未知'}</p>
-                                    <p>来源: \${data.source}</p>
+                                    <p><strong>\${successText}</strong></p>
+                                    <p>\${apiAddressText} <code>\${apiUrl}</code></p>
+                                    <p>\${originalUrlText} <a href="\${data.favicon}" target="_blank">\${data.favicon}</a></p>
+                                    <p>\${sizeText} \${data.size || unknownText}</p>
+                                    <p>\${sourceText} \${data.source}</p>
                                     \${cacheInfo}
                                 </div>
                             </div>
                         \`;
                     } else {
-                        resultDiv.innerHTML = \`<p>❌ 获取失败: \${data.error}</p>\`;
+                        const errorText = currentLang === 'en' ? 'Failed to get favicon' : '获取失败';
+                        resultDiv.innerHTML = \`<p>❌ \${errorText}: \${data.error}</p>\`;
                     }
                 }
             } catch (error) {
-                resultDiv.innerHTML = \`<p>❌ 请求失败: \${error.message}</p>\`;
+                const requestFailedText = currentLang === 'en' ? 'Request failed' : '请求失败';
+                resultDiv.innerHTML = \`<p>❌ \${requestFailedText}: \${error.message}</p>\`;
             }
         }
         
@@ -1269,8 +1294,9 @@ class EnhancedFaviconService {
     }
     
     // 规范化URL
-    normalizeUrl(url) {
-        if (!url) throw new Error('URL不能为空');
+    normalizeUrl(url, lang = 'zh') {
+        const isEn = lang === 'en';
+        if (!url) throw new Error(isEn ? 'URL cannot be empty' : 'URL不能为空');
         
         if (!url.match(/^https?:\/\//)) {
             url = 'https://' + url;
@@ -1280,7 +1306,7 @@ class EnhancedFaviconService {
             const urlObj = new URL(url);
             return urlObj.origin;
         } catch (error) {
-            throw new Error('无效的URL格式');
+            throw new Error(isEn ? 'Invalid URL format' : '无效的URL格式');
         }
     }
     
@@ -1368,8 +1394,8 @@ class EnhancedFaviconService {
     }
     
     // 主要的favicon获取方法（增强版）
-    async getFavicon(url, size = 32, skipCache = false) {
-        const normalizedUrl = this.normalizeUrl(url);
+    async getFavicon(url, size = 32, skipCache = false, lang = 'zh') {
+        const normalizedUrl = this.normalizeUrl(url, lang);
         
         // 1. 尝试从缓存获取（除非跳过缓存）
         if (!skipCache) {
@@ -1502,9 +1528,14 @@ export default {
                 const nocache = url.searchParams.get('nocache') === 'true';
                 
                 if (!targetUrl) {
+                    // 检测语言 - 从请求路径或Accept-Language头判断
+                    const acceptLang = request.headers.get('Accept-Language') || '';
+                    const isZh = url.pathname.includes('/zh') || acceptLang.includes('zh-CN') || acceptLang.includes('zh');
+                    const errorMsg = isZh ? '缺少url参数' : 'Missing url parameter';
+                    
                     return new Response(JSON.stringify({
                         success: false,
-                        error: '缺少url参数'
+                        error: errorMsg
                     }), {
                         status: 400,
                         headers: {
@@ -1514,9 +1545,14 @@ export default {
                     });
                 }
                 
+                // 检测语言
+                const acceptLang = request.headers.get('Accept-Language') || '';
+                const isZh = url.pathname.includes('/zh') || acceptLang.includes('zh-CN') || acceptLang.includes('zh');
+                const lang = isZh ? 'zh' : 'en';
+                
                 // 使用增强版服务，传入 KV 存储绑定
                 const faviconService = new EnhancedFaviconService(env.FAVICON_CACHE);
-                const result = await faviconService.getFavicon(targetUrl, size, nocache);
+                const result = await faviconService.getFavicon(targetUrl, size, nocache, lang);
                 
                 // 如果请求格式是redirect，直接重定向到favicon
                 if (format === 'redirect') {
