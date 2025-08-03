@@ -758,7 +758,7 @@ function generateHTML(lang = 'en') {
             <div class="demo-section">
                 <h2 data-i18n="demo-title">🎯 在线演示</h2>
                 <div class="input-group">
-                    <input type="text" id="urlInput" data-i18n-placeholder="demo-placeholder" placeholder="输入网站URL，例如：https://www.google.com" value="https://www.google.com">
+                    <input type="text" id="urlInput" data-i18n-placeholder="demo-placeholder" placeholder="输入网站URL，例如：www.google.com" value="www.google.com">
                     <select id="formatSelect" class="format-select">
                         <option value="" data-i18n="format-image">图片 (默认)</option>
                         <option value="json" data-i18n="format-json">JSON 数据</option>
@@ -768,7 +768,7 @@ function generateHTML(lang = 'en') {
                 </div>
                 <div class="api-preview">
                     <label data-i18n="api-preview-label">API 请求预览：</label>
-                    <code id="apiPreview">https://faviconsnap.com/api/favicon?url=https://www.google.com</code>
+                    <code id="apiPreview">https://faviconsnap.com/api/favicon?url=www.google.com</code>
                     <button class="copy-btn" onclick="copyApiUrl()" data-i18n="copy-button">📋 复制</button>
                 </div>
                 <div id="result" class="result" style="display: none;"></div>
@@ -925,7 +925,7 @@ Location: https://github.com/favicon.ico</code></pre>
     <script>
         // 更新API预览
         function updateApiPreview() {
-            const url = document.getElementById('urlInput').value || 'https://www.google.com';
+            const url = document.getElementById('urlInput').value || 'www.google.com';
             const format = document.getElementById('formatSelect').value;
             
             let apiUrl = \`https://faviconsnap.com/api/favicon?url=\${encodeURIComponent(url)}\`;
@@ -1088,7 +1088,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'feature-global': '🌍 全球加速', 
                 'feature-stats': '📊 实时统计',
                 'demo-title': '🎯 在线演示',
-                'demo-placeholder': '输入网站URL，例如：https://www.google.com',
+                'demo-placeholder': '输入网站URL，例如：www.google.com',
                 'demo-button': '获取图标',
                 'format-image': '图片 (默认)',
                 'format-json': 'JSON 数据',
@@ -1135,7 +1135,7 @@ Location: https://github.com/favicon.ico</code></pre>
                 'feature-global': '🌍 Global CDN',
                 'feature-stats': '📊 Real-time Stats',
                 'demo-title': '🎯 Live Demo',
-                'demo-placeholder': 'Enter website URL, e.g.: https://www.google.com',
+                'demo-placeholder': 'Enter website URL, e.g.: www.google.com',
                 'demo-button': 'Get Favicon',
                 'format-image': 'Image (Default)',
                 'format-json': 'JSON Data',
